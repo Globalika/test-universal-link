@@ -52,6 +52,34 @@
             margin-top: 20px;
             border: 1px solid #c3e6c3;
         }
+        .continue-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        .continue-button:hover {
+            transform: translateY(-2px);
+        }
+        .continue-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .url-info {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
+        }
     </style>
 </head>
 <body>
@@ -66,6 +94,51 @@
             📱 Should open Menorah app<br>
             🔗 Path: /resetpassword*
         </div>
+
+        <button id="continueBtn" class="continue-button" onclick="continueToApp()">
+            Продолжить в приложении
+        </button>
+
+        <div id="urlInfo" class="url-info" style="display: none;">
+            <strong>URL Parameters:</strong><br>
+            <span id="urlParams"></span>
+        </div>
     </div>
+
+    <script>
+        // Извлекаем параметры из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const continueUrl = urlParams.get('continueUrl');
+        const oobCode = urlParams.get('oobCode');
+        const mode = urlParams.get('mode');
+
+        // Показываем информацию об URL параметрах
+        if (continueUrl || oobCode || mode) {
+            document.getElementById('urlInfo').style.display = 'block';
+            let paramsText = '';
+            if (mode) paramsText += `Mode: ${mode}<br>`;
+            if (oobCode) paramsText += `OOB Code: ${oobCode}<br>`;
+            if (continueUrl) paramsText += `Continue URL: ${continueUrl}`;
+            document.getElementById('urlParams').innerHTML = paramsText;
+        }
+
+        // Функция для перехода на continueUrl
+        function continueToApp() {
+            if (continueUrl) {
+                console.log('Переходим на:', continueUrl);
+                window.location.href = continueUrl;
+            } else {
+                console.log('continueUrl не найден');
+                alert('Continue URL не найден в параметрах');
+            }
+        }
+
+        // Автоматически показываем кнопку, если есть continueUrl
+        if (continueUrl) {
+            document.getElementById('continueBtn').style.display = 'inline-block';
+        } else {
+            document.getElementById('continueBtn').style.display = 'none';
+        }
+    </script>
 </body>
 </html> 
