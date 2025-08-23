@@ -4,7 +4,11 @@
     "details": [
       {
         "appID": "4N8WQZW8HH.menorah.community",
-        "paths": ["/resetpassword/*", "/__/auth/handler"]
+        "paths": [
+          "/resetpassword*",
+          "/__/auth/handler",
+          "/"
+        ]
       }
     ]
   }
